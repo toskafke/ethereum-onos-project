@@ -77,7 +77,6 @@ def plot_graph(G, scam_address, layout="spring"):
     import matplotlib.pyplot as plt
     plt.figure(figsize=(16, 12))
     d = dict(G.degree)
-    d["0x7c9001c50ea57c1b2ec1e3e63cf04c297534bfc1"] = 100
     color_map = []
     edge_color_map = []
     edge_size = []
