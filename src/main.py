@@ -80,22 +80,19 @@ def plot_graph(G, scam_address, layout="spring"):
     d["0x7c9001c50ea57c1b2ec1e3e63cf04c297534bfc1"] = 100
     color_map = []
     edge_color_map = []
-    for u, v in G.edges():
-        if u == scam_address or v == scam_address:
-            edge_color_map.append("blue")
-        else:
-            edge_color_map.append("black")
-    for node in G:
-        if node == scam_address:
-            color_map.append('blue')
-        else:
-            color_map.append('red')
     edge_size = []
     for u, v in G.edges():
         if u == scam_address or v == scam_address:
-            edge_size.append(20)
+            edge_size.append(10)
+            edge_color_map.append("red")
         else:
-            edge_size.append(5)
+            edge_size.append(0.9)
+            edge_color_map.append("black")
+    for node in G:
+        if node == scam_address:
+            color_map.append('red')
+        else:
+            color_map.append('green')
     if layout == "spring":
         pos = nx.spring_layout(G, k=0.3, iterations=20)
     elif layout == "circular":
@@ -103,9 +100,8 @@ def plot_graph(G, scam_address, layout="spring"):
         pos[scam_address] = np.array([0, 0])
     else:
         pos = nx.random_layout(G)
-    nx.draw(G, pos=pos, node_color=color_map, edge_color=edge_color_map,
-            node_size=[v * 10 for v in d.values()], alpha=0.8, edge_size=edge_size)
-
+    nx.draw_networkx_nodes(G, pos=pos, node_color=color_map, node_size=[v * 10 for v in d.values()], alpha=0.8)
+    nx.draw_networkx_edges(G, pos, width=edge_size, edge_color=edge_color_map)
     plt.savefig(GRAPH_FILE_NAME)
     # this is constant so we don't even need to return anything
     return GRAPH_FILE_NAME
